@@ -22,6 +22,8 @@ type DB struct {
 	MssqlMarketRead     *basedb.Mssql
 	MssqlMarketToolAll  *basedb.Mssql
 	MssqlMarketToolRead *basedb.Mssql
+	MssqlEvent          *basedb.Mssql
+	MssqlEventRead      *basedb.Mssql
 
 	Cache *basedb.CacheV8
 
@@ -82,35 +84,62 @@ func InitDB(conf *config.ServerConfig) (err error) {
 }
 func ConnectAllDB(conf *config.ServerConfig) error {
 	var err error
-	gDB.MssqlAccountAll, err = gDB.ConnectDB(&conf.MssqlDBAccountAll)
-	if err != nil {
-		return err
+	if conf.MssqlDBAccountAll.Enable {
+		gDB.MssqlAccountAll, err = gDB.ConnectDB(&conf.MssqlDBAccountAll)
+		if err != nil {
+			return err
+		}
 	}
 
-	gDB.MssqlAccountRead, err = gDB.ConnectDB(&conf.MssqlDBAccountRead)
-	if err != nil {
-		return err
+	if conf.MssqlDBAccountRead.Enable {
+		gDB.MssqlAccountRead, err = gDB.ConnectDB(&conf.MssqlDBAccountRead)
+		if err != nil {
+			return err
+		}
 	}
 
-	gDB.MssqlMarketAll, err = gDB.ConnectDB(&conf.MssqlDBMarketAll)
-	if err != nil {
-		return err
+	if conf.MssqlDBMarketAll.Enable {
+		gDB.MssqlMarketAll, err = gDB.ConnectDB(&conf.MssqlDBMarketAll)
+		if err != nil {
+			return err
+		}
 	}
 
-	gDB.MssqlMarketRead, err = gDB.ConnectDB(&conf.MssqlDBMarketRead)
-	if err != nil {
-		return err
+	if conf.MssqlDBMarketRead.Enable {
+		gDB.MssqlMarketRead, err = gDB.ConnectDB(&conf.MssqlDBMarketRead)
+		if err != nil {
+			return err
+		}
 	}
 
-	gDB.MssqlMarketToolAll, err = gDB.ConnectDB(&conf.MssqlDBMarketToolAll)
-	if err != nil {
-		return err
+	if conf.MssqlDBMarketToolAll.Enable {
+		gDB.MssqlMarketToolAll, err = gDB.ConnectDB(&conf.MssqlDBMarketToolAll)
+		if err != nil {
+			return err
+		}
 	}
 
-	gDB.MssqlMarketToolRead, err = gDB.ConnectDB(&conf.MssqlDBMarketToolRead)
-	if err != nil {
-		return err
+	if conf.MssqlDBMarketToolRead.Enable {
+		gDB.MssqlMarketToolRead, err = gDB.ConnectDB(&conf.MssqlDBMarketToolRead)
+		if err != nil {
+			return err
+		}
 	}
+
+	if conf.MssqlDBEvent.Enable {
+		gDB.MssqlEvent, err = gDB.ConnectDB(&conf.MssqlDBEvent)
+		if err != nil {
+			return err
+		}
+	}
+
+	if conf.MssqlDBEventRead.Enable {
+		gDB.MssqlEventRead, err = gDB.ConnectDB(&conf.MssqlDBEventRead)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 func (o *DB) ConnectDB(conf *baseconf.DBAuth) (*basedb.Mssql, error) {

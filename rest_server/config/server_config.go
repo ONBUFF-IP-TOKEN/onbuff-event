@@ -74,6 +74,8 @@ type ServerConfig struct {
 	MssqlDBMarketRead     baseconf.DBAuth `yaml:"mssql_db_market_read"`
 	MssqlDBMarketToolAll  baseconf.DBAuth `yaml:"mssql_db_market_tool"`
 	MssqlDBMarketToolRead baseconf.DBAuth `yaml:"mssql_db_market_tool_read"`
+	MssqlDBEvent          baseconf.DBAuth `yaml:"mssql_db_event"`
+	MssqlDBEventRead      baseconf.DBAuth `yaml:"mssql_db_event_read"`
 
 	ParentWallets    []Wallets          `yaml:"parent_wallet_info"`
 	ParentWalletsMap map[string]Wallets // key parent_wallet_address

@@ -13,6 +13,7 @@ import (
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/controllers/internalapi"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/controllers/resultcode"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/model"
+	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/proc"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_log_server"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_point_manager"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_token_manager"
@@ -22,6 +23,8 @@ import (
 type ServerApp struct {
 	base.BaseApp
 	conf *config.ServerConfig
+
+	procMgr *proc.ProcManager
 }
 
 func (o *ServerApp) Init(configFile string) (err error) {
@@ -36,6 +39,10 @@ func (o *ServerApp) Init(configFile string) (err error) {
 	o.InitWebInnoServer(o.conf)
 
 	if err := o.NewDB(o.conf); err != nil {
+		return err
+	}
+
+	if err := o.InitProcManager(); err != nil {
 		return err
 	}
 
@@ -85,4 +92,13 @@ func (o *ServerApp) InitPointManagerServer(conf *config.ServerConfig) error {
 
 func (o *ServerApp) InitWebInnoServer(conf *config.ServerConfig) error {
 	return inno_web_server.InitWebInno(conf)
+}
+
+func (o *ServerApp) InitProcManager() error {
+	o.procMgr = proc.NewProcManager()
+
+	if err := o.procMgr.Init(); err != nil {
+		return err
+	}
+	return nil
 }
