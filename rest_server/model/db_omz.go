@@ -57,3 +57,38 @@ func (o *DB) USPE_Get_AirDrop() (*context.OMZ_AirDrop, error) {
 
 	return airDrop, nil
 }
+
+func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyMission, error) {
+	ProcName := USPE_GetList_AccountAirDropMissions
+	var rs orginMssql.ReturnStatus
+	rows, err := o.MssqlEventRead.GetDB().QueryContext(originCtx.Background(), ProcName,
+		sql.Named("AUID", auid),
+		&rs)
+	if err != nil {
+		log.Errorf(ProcName+" QueryContext err : %v", err)
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	myMissions := []*context.OMZ_MyMission{}
+	for rows.Next() {
+		myMission := &context.OMZ_MyMission{}
+		if err := rows.Scan(&myMission.MissionID,
+			&myMission.MissionDesc,
+			&myMission.MissionCompleted,
+			&myMission.Win,
+			&myMission.ClaimStatus); err == nil {
+			myMissions = append(myMissions, myMission)
+		} else {
+			log.Errorf(ProcName+" Scan error : %v", err)
+		}
+	}
+
+	if rs != 1 {
+		log.Errorf(ProcName+" returnvalue error : %v", rs)
+		return nil, errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
+	}
+
+	return myMissions, nil
+}

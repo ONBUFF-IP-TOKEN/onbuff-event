@@ -7,12 +7,16 @@ const (
 	// db fail
 	Result_Error_DB_Normal_fail         = 70000
 	Result_Error_DB_OMZ_Get_AirdropInfo = 70001
+	Result_Error_DB_OMZ_Get_Mission     = 70002
 
 	// redis error
 	Result_PubSub_InternalErr = 71000 // pubsub error
 
 	// auth error
 	Result_Auth_InvalidJwt = 71100 // auth error
+
+	// param error
+	Result_Require_AUID = 71200 // require auid
 )
 
 var ResultCodeText = map[int]string{
@@ -21,8 +25,11 @@ var ResultCodeText = map[int]string{
 
 	Result_Error_DB_Normal_fail:         "DB Error",
 	Result_Error_DB_OMZ_Get_AirdropInfo: "Airdrop information inquiry failed",
+	Result_Error_DB_OMZ_Get_Mission:     "Mission lookup failed",
 
 	Result_PubSub_InternalErr: "redis pubusb error",
 
 	Result_Auth_InvalidJwt: "Invalid jwt token",
+
+	Result_Require_AUID: "Requires auid information.",
 }
