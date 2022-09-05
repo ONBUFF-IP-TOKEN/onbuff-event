@@ -160,6 +160,9 @@ func (o *DB) ConnectDB(conf *baseconf.DBAuth) (*basedb.Mssql, error) {
 }
 
 func CheckPingDB(db *basedb.Mssql, conf *baseconf.DBAuth) *basedb.Mssql {
+	if !conf.Enable {
+		return nil
+	}
 	// 연결이 안되어있거나, DB Connection이 끊어진 경우에는 재연결 시도
 	if db == nil || !db.Connection.IsConnect {
 		var err error

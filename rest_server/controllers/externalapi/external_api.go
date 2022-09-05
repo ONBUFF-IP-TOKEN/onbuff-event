@@ -93,3 +93,7 @@ func (o *ExternalAPI) GetHealthCheck(c echo.Context) error {
 func (o *ExternalAPI) GetVersion(c echo.Context) error {
 	return commonapi.GetVersion(c, o.BaseController.MaxVersion)
 }
+
+func (o *ExternalAPI) GetOMZAirDropInfo(c echo.Context) error {
+	return commonapi.GetOMZAirDropInfo(c)
+}
