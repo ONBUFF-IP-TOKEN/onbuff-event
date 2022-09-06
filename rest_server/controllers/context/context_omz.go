@@ -5,32 +5,6 @@ import (
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/controllers/resultcode"
 )
 
-// 추첨 여부
-const (
-	IsDrawed_Incomplete = iota // 추첨 미완료
-	IsDrawed_Complete          // 추첨 완료
-)
-
-// 미션 완료 여부
-const (
-	MissionIncomplete = iota // 미션 미완료
-	MissionCompleted         // 미션 완료
-)
-
-// 당첨 여부
-const (
-	Loser = iota // 낙첨
-	Win          // 당첨
-)
-
-// 청구 여부
-const (
-	ClaimStatus_NotClaim      = iota // 청구 안함
-	ClaimStatus_Claiming             // 청구 중
-	ClaimStatus_ClaimFail            // 청구 실패
-	ClaimStatus_ClaimComplete        // 청구 완료
-)
-
 // response GetOMZAirDropInfo
 type OMZ_AirDrop struct {
 	MissionStartSDT string           `json:"mission_start_sdt"`
@@ -40,16 +14,7 @@ type OMZ_AirDrop struct {
 	IsDrawed        bool             `json:"is_drawed"` // 추첨 여부
 	AirDropQuantity int64            `json:"airdrop_quantity"`
 	ClaimQuantity   int64            `json:"claim_quantity"`
-	Missions        []*OMZ_MyMission `json:"missions"`
-}
-
-// response GetOMZMyMission
-type OMZ_MyMission struct {
-	MissionID        int64  `json:"mission_id"`
-	MissionDesc      string `json:"mission_desc"`
-	MissionCompleted bool   `json:"mission_completed"` // 미션 완료 여부
-	Win              bool   `json:"win"`               // 당첨 여부
-	ClaimStatus      int64  `json:"claim_status"`      // 청구 여부
+	Missions        *ResOMZMyMission `json:"missions"`
 }
 
 // request GetOMZMyMission
@@ -71,6 +36,12 @@ func (o *ReqOMZMyMisssion) CheckValidate(ctx *OnbuffEventContext) *base.BaseResp
 	return nil
 }
 
+// response GetOMZMyMission
+type ResOMZMyMission struct {
+	WinningQuantity int64            `json:"winning_quantity"`
+	MyMission       []*OMZ_MyMission `json:"my_missions"`
+}
+
 // request claim
 type ReqOMZClaimAirDrop struct {
 	AUID int64 `json:"au_id"`
@@ -87,5 +58,19 @@ func (o *ReqOMZClaimAirDrop) CheckValidate(ctx *OnbuffEventContext) *base.BaseRe
 		return base.MakeBaseResponse(resultcode.Result_Require_AUID)
 	}
 
+	return nil
+}
+
+// request PutOMZAirDropMission
+type ReqOMZAirDropMission struct {
+	AUID      int64 `json:"au_id"`
+	MissionID int64 `json:"mission_id"`
+}
+
+func NewReqOMZAirDropMission() *ReqOMZAirDropMission {
+	return new(ReqOMZAirDropMission)
+}
+
+func (o *ReqOMZAirDropMission) CheckValidate(ctx *OnbuffEventContext) *base.BaseResponse {
 	return nil
 }

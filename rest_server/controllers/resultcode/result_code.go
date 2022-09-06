@@ -5,9 +5,10 @@ const (
 	ResultInternalServerError = 500
 
 	// db fail
-	Result_Error_DB_Normal_fail         = 70000
-	Result_Error_DB_OMZ_Get_AirdropInfo = 70001
-	Result_Error_DB_OMZ_Get_Mission     = 70002
+	Result_Error_DB_Normal_fail                    = 70000
+	Result_Error_DB_OMZ_Get_AirdropInfo            = 70001
+	Result_Error_DB_OMZ_Get_Mission                = 70002
+	Result_Error_DB_OMZ_Add_AccountAirDropMissions = 70003
 
 	// redis error
 	Result_PubSub_InternalErr = 71000 // pubsub error
@@ -23,9 +24,10 @@ var ResultCodeText = map[int]string{
 	Result_Success:            "success",
 	ResultInternalServerError: "internal server error",
 
-	Result_Error_DB_Normal_fail:         "DB Error",
-	Result_Error_DB_OMZ_Get_AirdropInfo: "Airdrop information inquiry failed",
-	Result_Error_DB_OMZ_Get_Mission:     "Mission lookup failed",
+	Result_Error_DB_Normal_fail:                    "DB Error",
+	Result_Error_DB_OMZ_Get_AirdropInfo:            "Airdrop information inquiry failed",
+	Result_Error_DB_OMZ_Get_Mission:                "Mission lookup failed",
+	Result_Error_DB_OMZ_Add_AccountAirDropMissions: "Failed to add mission",
 
 	Result_PubSub_InternalErr: "redis pubusb error",
 

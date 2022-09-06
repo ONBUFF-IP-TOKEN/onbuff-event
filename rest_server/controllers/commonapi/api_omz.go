@@ -19,10 +19,13 @@ func GetOMZAirDropInfo(c echo.Context) error {
 		if airDropInfo, err := model.GetDB().USPE_Get_AirDrop(); err != nil {
 			resp.SetReturn(resultcode.Result_Error_DB_OMZ_Get_AirdropInfo)
 		} else {
-			if missions, err := model.GetDB().USPE_GetList_AccountAirDropMissions(0); err != nil {
+			if missionsLst, winningQuantity, err := model.GetDB().USPE_GetList_AccountAirDropMissions(0); err != nil {
 				resp.SetReturn(resultcode.Result_Error_DB_OMZ_Get_Mission)
 			} else {
-				airDropInfo.Missions = missions
+				airDropInfo.Missions = &context.ResOMZMyMission{
+					WinningQuantity: winningQuantity,
+					MyMission:       missionsLst,
+				}
 				resp.Value = airDropInfo
 				model.GetDB().CacheOMZSetAirDropInof(airDropInfo)
 			}
@@ -38,15 +41,19 @@ func GetOMZMyMission(ctx *context.OnbuffEventContext, req *context.ReqOMZMyMisss
 	resp := new(base.BaseResponse)
 	resp.Success()
 
-	if myMissions, err := model.GetDB().CacheOMZGetMyMissions(req.AUID); err != nil {
-		if myMissions, err := model.GetDB().USPE_GetList_AccountAirDropMissions(req.AUID); err != nil {
+	if resMyMission, err := model.GetDB().CacheOMZGetMyMissions(req.AUID); err != nil {
+		if missionLst, winningQuantity, err := model.GetDB().USPE_GetList_AccountAirDropMissions(req.AUID); err != nil {
 			resp.SetReturn(resultcode.Result_Error_DB_OMZ_Get_Mission)
 		} else {
-			resp.Value = myMissions
-			model.GetDB().CacheOMZSetMyMissions(req.AUID, myMissions)
+			resMyMission := &context.ResOMZMyMission{
+				WinningQuantity: winningQuantity,
+				MyMission:       missionLst,
+			}
+			resp.Value = resMyMission
+			model.GetDB().CacheOMZSetMyMissions(req.AUID, resMyMission)
 		}
 	} else {
-		resp.Value = myMissions
+		resp.Value = resMyMission
 	}
 
 	return ctx.EchoContext.JSON(http.StatusOK, resp)
@@ -55,6 +62,17 @@ func GetOMZMyMission(ctx *context.OnbuffEventContext, req *context.ReqOMZMyMisss
 func PostOMZClaimAirDrop(ctx *context.OnbuffEventContext, req *context.ReqOMZClaimAirDrop) error {
 	resp := new(base.BaseResponse)
 	resp.Success()
+
+	return ctx.EchoContext.JSON(http.StatusOK, resp)
+}
+
+func PutOMZAirDropMission(ctx *context.OnbuffEventContext, req *context.ReqOMZAirDropMission) error {
+	resp := new(base.BaseResponse)
+	resp.Success()
+
+	if err := model.GetDB().USPE_Add_AccountAirDropMissions(req.AUID, req.MissionID); err != nil {
+		resp.SetReturn(resultcode.Result_Error_DB_OMZ_Add_AccountAirDropMissions)
+	}
 
 	return ctx.EchoContext.JSON(http.StatusOK, resp)
 }

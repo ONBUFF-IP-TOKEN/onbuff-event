@@ -15,6 +15,9 @@ import (
 const (
 	USPE_Get_AirDrop                    = "[dbo].[USPE_Get_AirDrop]"
 	USPE_GetList_AccountAirDropMissions = "[dbo].[USPE_GetList_AccountAirDropMissions]"
+	USPE_ClmStrt_AirDrop                = "[dbo].[USPE_ClmStrt_AirDrop]"
+	USPE_ClmCmplt_AirDrop               = "[dbo].[USPE_ClmCmplt_AirDrop]"
+	USPE_Add_AccountAirDropMissions     = "[dbo].[USPE_Add_AccountAirDropMissions]"
 )
 
 func (o *DB) USPE_Get_AirDrop() (*context.OMZ_AirDrop, error) {
@@ -58,15 +61,17 @@ func (o *DB) USPE_Get_AirDrop() (*context.OMZ_AirDrop, error) {
 	return airDrop, nil
 }
 
-func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyMission, error) {
+func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyMission, int64, error) {
 	ProcName := USPE_GetList_AccountAirDropMissions
+	winningQuantity := int64(0)
 	var rs orginMssql.ReturnStatus
 	rows, err := o.MssqlEventRead.GetDB().QueryContext(originCtx.Background(), ProcName,
 		sql.Named("AUID", auid),
+		sql.Named("WinningQuantity", sql.Out{Dest: &winningQuantity}),
 		&rs)
 	if err != nil {
 		log.Errorf(ProcName+" QueryContext err : %v", err)
-		return nil, err
+		return nil, 0, err
 	}
 
 	defer rows.Close()
@@ -77,8 +82,7 @@ func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyM
 		if err := rows.Scan(&myMission.MissionID,
 			&myMission.MissionDesc,
 			&myMission.MissionCompleted,
-			&myMission.Win,
-			&myMission.ClaimStatus); err == nil {
+			&myMission.Win); err == nil {
 			myMissions = append(myMissions, myMission)
 		} else {
 			log.Errorf(ProcName+" Scan error : %v", err)
@@ -87,8 +91,88 @@ func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyM
 
 	if rs != 1 {
 		log.Errorf(ProcName+" returnvalue error : %v", rs)
-		return nil, errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
+		return nil, 0, errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
 	}
 
-	return myMissions, nil
+	return myMissions, winningQuantity, nil
+}
+
+func (o *DB) USPE_ClmStrt_AirDrop(auid int64) ([]*context.OMZ_MyClaimNFT, int64, error) {
+	ProcName := USPE_ClmStrt_AirDrop
+	claimQuantity := int64(0)
+	var rs orginMssql.ReturnStatus
+	rows, err := o.MssqlEvent.GetDB().QueryContext(originCtx.Background(), ProcName,
+		sql.Named("AUID", auid),
+		sql.Named("ClaimQuantity", sql.Out{Dest: &claimQuantity}),
+		&rs)
+	if err != nil {
+		log.Errorf(ProcName+" QueryContext err : %v", err)
+		return nil, 0, err
+	}
+
+	defer rows.Close()
+
+	myClaims := []*context.OMZ_MyClaimNFT{}
+	for rows.Next() {
+		myClaim := &context.OMZ_MyClaimNFT{}
+		if err := rows.Scan(&myClaim.NFTID,
+			&myClaim.NFTPackID); err == nil {
+			myClaims = append(myClaims, myClaim)
+		} else {
+			log.Errorf(ProcName+" Scan error : %v", err)
+		}
+	}
+
+	if rs != 1 {
+		log.Errorf(ProcName+" returnvalue error : %v", rs)
+		return nil, 0, errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
+	}
+
+	return myClaims, claimQuantity, nil
+}
+
+func (o *DB) USPE_ClmCmplt_AirDrop(auid int64, transferID int64, nftID int64, txHash string) error {
+	ProcName := USPE_ClmCmplt_AirDrop
+	var rs orginMssql.ReturnStatus
+	rows, err := o.MssqlEvent.GetDB().QueryContext(originCtx.Background(), ProcName,
+		sql.Named("AUID", auid),
+		sql.Named("TransferID", transferID),
+		sql.Named("NFTID", nftID),
+		sql.Named("TxHash", txHash),
+		&rs)
+	if err != nil {
+		log.Errorf(ProcName+" QueryContext err : %v", err)
+		return err
+	}
+
+	defer rows.Close()
+
+	if rs != 1 {
+		log.Errorf(ProcName+" returnvalue error : %v", rs)
+		return errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
+	}
+
+	return nil
+}
+
+func (o *DB) USPE_Add_AccountAirDropMissions(auid int64, missionID int64) error {
+	ProcName := USPE_Add_AccountAirDropMissions
+	var rs orginMssql.ReturnStatus
+	rows, err := o.MssqlEvent.GetDB().QueryContext(originCtx.Background(), ProcName,
+		sql.Named("AUID", auid),
+		sql.Named("MissionID", missionID),
+		&rs)
+	if err != nil {
+		log.Errorf(ProcName+" QueryContext err : %v", err)
+		return err
+	}
+
+	defer rows.Close()
+
+	if rs != 1 {
+		log.Errorf(ProcName+" returnvalue error : %v", rs)
+		return errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
+	}
+
+	return nil
 }
