@@ -15,6 +15,7 @@ var currentConfig *ServerConfig
 type OnbuffEvent struct {
 	ApplicationName string `json:"application_name" yaml:"application_name"`
 	APIDocs         bool   `json:"api_docs" yaml:"api_docs"`
+	EnableOMZ       bool   `json:"enable_omz"`
 }
 
 type ApiAuth struct {
@@ -77,13 +78,11 @@ type ServerConfig struct {
 	MssqlDBEvent          baseconf.DBAuth `yaml:"mssql_db_event"`
 	MssqlDBEventRead      baseconf.DBAuth `yaml:"mssql_db_event_read"`
 
-	ParentWallets    []Wallets          `yaml:"parent_wallet_info"`
-	ParentWalletsMap map[string]Wallets // key parent_wallet_address
-
 	Auth           ApiAuth `yaml:"api_auth"`
 	TokenMgrServer ApiInno `yaml:"api_token_manager_server"`
 	InnoLog        ApiInno `yaml:"inno_log"`
 	PointMgrServer ApiInno `yaml:"api_point_manager_server"`
+	InnoMarket     ApiInno `yaml:"inno_market"`
 	WebInno        ApiInno `yaml:"web_inno_server"`
 
 	Schedules   []Schedule `yaml:"schedules"`
@@ -99,10 +98,7 @@ func GetInstance(filepath ...string) *ServerConfig {
 		if err := baseconf.Load(filepath[0], currentConfig); err != nil {
 			currentConfig = nil
 		} else {
-			currentConfig.ParentWalletsMap = make(map[string]Wallets)
-			for _, wallet := range currentConfig.ParentWallets {
-				currentConfig.ParentWalletsMap[wallet.Name] = wallet
-			}
+
 			currentConfig.ScheduleMap = make(map[string]Schedule)
 			for _, schedule := range currentConfig.Schedules {
 				currentConfig.ScheduleMap[schedule.Name] = schedule

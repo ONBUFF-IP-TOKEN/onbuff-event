@@ -3,7 +3,7 @@ module github.com/ONBUFF-IP-TOKEN/onbuff-event
 go 1.17
 
 require (
-	github.com/ONBUFF-IP-TOKEN/baseInnoClient v1.0.22
+	github.com/ONBUFF-IP-TOKEN/baseInnoClient v1.0.24
 	github.com/ONBUFF-IP-TOKEN/baseapp v1.0.16
 	github.com/ONBUFF-IP-TOKEN/basedb v1.1.18
 	github.com/ONBUFF-IP-TOKEN/basenet v1.0.3

@@ -38,8 +38,8 @@ func (o *ReqOMZMyMisssion) CheckValidate(ctx *OnbuffEventContext) *base.BaseResp
 
 // response GetOMZMyMission
 type ResOMZMyMission struct {
-	WinningQuantity int64            `json:"winning_quantity"`
-	MyMission       []*OMZ_MyMission `json:"my_missions"`
+	IsClaimed bool             `json:"is_claimed"`
+	MyMission []*OMZ_MyMission `json:"my_missions"`
 }
 
 // request claim

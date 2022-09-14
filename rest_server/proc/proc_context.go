@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	ChannelName = "Channel_TokenMgr"
+	OMZChannel = "OMZChannel"
 )
 
 var chanContext *ChanContext

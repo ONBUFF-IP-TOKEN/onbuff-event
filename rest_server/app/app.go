@@ -15,6 +15,7 @@ import (
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/model"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/proc"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_log_server"
+	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_market_server"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_point_manager"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_token_manager"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_web_server"
@@ -36,6 +37,7 @@ func (o *ServerApp) Init(configFile string) (err error) {
 	o.InitTokenManagerServer(o.conf)
 	o.InitLogServer(o.conf)
 	o.InitPointManagerServer(o.conf)
+	o.InitMarketServer(o.conf)
 	o.InitWebInnoServer(o.conf)
 
 	if err := o.NewDB(o.conf); err != nil {
@@ -88,6 +90,10 @@ func (o *ServerApp) InitLogServer(conf *config.ServerConfig) error {
 
 func (o *ServerApp) InitPointManagerServer(conf *config.ServerConfig) error {
 	return inno_point_manager.InitPointManager(conf)
+}
+
+func (o *ServerApp) InitMarketServer(conf *config.ServerConfig) error {
+	return inno_market_server.InitInnoMarket(conf)
 }
 
 func (o *ServerApp) InitWebInnoServer(conf *config.ServerConfig) error {

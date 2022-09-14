@@ -18,6 +18,11 @@ const (
 
 	// param error
 	Result_Require_AUID = 71200 // require auid
+
+	// logic error
+	Result_Claimed_Already          = 71300 // already claimed
+	Result_Claimed_Not_Winning_Info = 71301 // No winning information
+	Result_Claimed_Succes           = 71302 // 	claim success
 )
 
 var ResultCodeText = map[int]string{
@@ -34,4 +39,8 @@ var ResultCodeText = map[int]string{
 	Result_Auth_InvalidJwt: "Invalid jwt token",
 
 	Result_Require_AUID: "Requires auid information.",
+
+	Result_Claimed_Already:          "already claimed",
+	Result_Claimed_Not_Winning_Info: "No winning information",
+	Result_Claimed_Succes:           "claim success",
 }

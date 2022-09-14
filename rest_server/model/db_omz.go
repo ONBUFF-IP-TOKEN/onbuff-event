@@ -61,17 +61,17 @@ func (o *DB) USPE_Get_AirDrop() (*context.OMZ_AirDrop, error) {
 	return airDrop, nil
 }
 
-func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyMission, int64, error) {
+func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyMission, bool, error) {
 	ProcName := USPE_GetList_AccountAirDropMissions
-	winningQuantity := int64(0)
+	isClaimed := false
 	var rs orginMssql.ReturnStatus
 	rows, err := o.MssqlEventRead.GetDB().QueryContext(originCtx.Background(), ProcName,
 		sql.Named("AUID", auid),
-		sql.Named("WinningQuantity", sql.Out{Dest: &winningQuantity}),
+		sql.Named("IsClaimed", sql.Out{Dest: &isClaimed}),
 		&rs)
 	if err != nil {
 		log.Errorf(ProcName+" QueryContext err : %v", err)
-		return nil, 0, err
+		return nil, isClaimed, err
 	}
 
 	defer rows.Close()
@@ -91,10 +91,10 @@ func (o *DB) USPE_GetList_AccountAirDropMissions(auid int64) ([]*context.OMZ_MyM
 
 	if rs != 1 {
 		log.Errorf(ProcName+" returnvalue error : %v", rs)
-		return nil, 0, errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
+		return nil, isClaimed, errors.New(ProcName + " returnvalue error " + strconv.Itoa(int(rs)))
 	}
 
-	return myMissions, winningQuantity, nil
+	return myMissions, isClaimed, nil
 }
 
 func (o *DB) USPE_ClmStrt_AirDrop(auid int64) ([]*context.OMZ_MyClaimNFT, int64, error) {

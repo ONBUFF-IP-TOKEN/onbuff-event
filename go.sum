@@ -1,5 +1,7 @@
 github.com/ONBUFF-IP-TOKEN/baseInnoClient v1.0.22 h1:Anmhj2vQC7V9ow5azB1T7JbnV17jP7oP67xJF2eo8Y4=
 github.com/ONBUFF-IP-TOKEN/baseInnoClient v1.0.22/go.mod h1:btwX4cJvQGSITZmQndT47Hd+7QMe0mzOsE5bMKrPV/c=
+github.com/ONBUFF-IP-TOKEN/baseInnoClient v1.0.24 h1:zFjOhARcoy1k7FeU3XWjxoHsk9L6Nkzau+/wQD7BD00=
+github.com/ONBUFF-IP-TOKEN/baseInnoClient v1.0.24/go.mod h1:btwX4cJvQGSITZmQndT47Hd+7QMe0mzOsE5bMKrPV/c=
 github.com/ONBUFF-IP-TOKEN/baseapp v1.0.12/go.mod h1:NQLToyeNDUPLYUqvLbbKm9ho5LySl2ycptA1rNIktGc=
 github.com/ONBUFF-IP-TOKEN/baseapp v1.0.13/go.mod h1:NQLToyeNDUPLYUqvLbbKm9ho5LySl2ycptA1rNIktGc=
 github.com/ONBUFF-IP-TOKEN/baseapp v1.0.16 h1:6Q0q3ALR5BGYaRAPwcvoncHywDCJta+4NpOqad4JOqU=

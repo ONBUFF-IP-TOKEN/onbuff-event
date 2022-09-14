@@ -37,3 +37,8 @@ type OMZ_MyClaimNFT struct {
 	NFTID     int64 `json:"nft_id"`
 	NFTPackID int64 `json:"nft_pack_id"`
 }
+
+// channel used
+type OMZ_NFTTransfer struct {
+	AUID int64 `json:"au_id"`
+}
