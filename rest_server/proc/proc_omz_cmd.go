@@ -9,6 +9,7 @@ import (
 	"github.com/ONBUFF-IP-TOKEN/basenet"
 	"github.com/ONBUFF-IP-TOKEN/baseutil/log"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/controllers/context"
+	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/model"
 	"github.com/ONBUFF-IP-TOKEN/onbuff-event/rest_server/servers/inno_market_server"
 )
 
@@ -113,6 +114,9 @@ func (o *Cmd) OMZNFTTransfer(data interface{}, cb chan interface{}) {
 		} else {
 			jsonbytes, _ := json.Marshal(res.Value.NFTLists)
 			log.Infof("auid:%v , claimquantity:%v,  nftlists:%v", params.AUID, res.Value.ClaimQuantity, jsonbytes)
+
+			// meta redis delete
+			model.GetDB().CacheOMZDelAirDropInof()
 		}
 	}
 }
