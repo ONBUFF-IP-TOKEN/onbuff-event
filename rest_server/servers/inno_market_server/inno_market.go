@@ -15,10 +15,10 @@ func GetInstance() *market.Server {
 func InitInnoMarket(conf *config.ServerConfig) error {
 	ServerInfo := &context.ServerInfo{
 		HostInfo: context.HostInfo{
-			IntHostUri: conf.InnoLog.InternalpiDomain,
-			ExtHostUri: conf.InnoLog.ExternalpiDomain,
-			IntVer:     conf.InnoLog.InternalVer,
-			ExtVer:     conf.InnoLog.ExternalVer,
+			IntHostUri: conf.InnoMarket.InternalpiDomain,
+			ExtHostUri: conf.InnoMarket.ExternalpiDomain,
+			IntVer:     conf.InnoMarket.InternalVer,
+			ExtVer:     conf.InnoMarket.ExternalVer,
 		},
 	}
 
