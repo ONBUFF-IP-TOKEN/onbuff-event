@@ -33,10 +33,10 @@ func (o *ExternalAPI) PostOMZClaimAirDrop(c echo.Context) error {
 	ctx := base.GetContext(c).(*context.OnbuffEventContext)
 
 	params := context.NewReqOMZClaimAirDrop()
-	if err := ctx.EchoContext.Bind(params); err != nil {
-		log.Error(err)
-		return base.BaseJSONInternalServerError(c, err)
-	}
+	// if err := ctx.EchoContext.Bind(params); err != nil {
+	// 	log.Error(err)
+	// 	return base.BaseJSONInternalServerError(c, err)
+	// }
 	if err := params.CheckValidate(ctx); err != nil {
 		return c.JSON(http.StatusOK, err)
 	}
