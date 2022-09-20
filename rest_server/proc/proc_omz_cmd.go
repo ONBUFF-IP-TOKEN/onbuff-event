@@ -113,7 +113,7 @@ func (o *Cmd) OMZNFTTransfer(data interface{}, cb chan interface{}) {
 			log.Errorf("inno_market response return : %v, message : %v", res.Return, res.Message)
 		} else {
 			jsonbytes, _ := json.Marshal(res.Value.NFTLists)
-			log.Infof("auid:%v , claimquantity:%v,  nftlists:%v", params.AUID, res.Value.ClaimQuantity, jsonbytes)
+			log.Infof("auid:%v , claimquantity:%v,  nftlists:%v", params.AUID, res.Value.ClaimQuantity, string(jsonbytes))
 
 			// meta redis delete
 			model.GetDB().CacheOMZDelAirDropInof()
