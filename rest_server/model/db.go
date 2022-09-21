@@ -77,8 +77,8 @@ func InitDB(conf *config.ServerConfig) (err error) {
 
 	LoadDBMeta()
 
-	schedule := conf.ScheduleMap["redis_pubsub_keepalive"]
-	go gDB.ListenSubscribeEvent(schedule.Enable, schedule.TermSec)
+	//schedule := conf.ScheduleMap["redis_pubsub_keepalive"]
+	//go gDB.ListenSubscribeEvent(schedule.Enable, schedule.TermSec)
 
 	return nil
 }
