@@ -75,6 +75,7 @@ func (o *Cmd) StartCommand() {
 			select {
 			case ch := <-o.command:
 				o.CommandProc(ch)
+				log.Infof("NFT Send reserved Queue Size : %v", len(o.command))
 			case <-ticker.C:
 			}
 		}
@@ -84,15 +85,14 @@ func (o *Cmd) StartCommand() {
 func (o *Cmd) CommandProc(data *basenet.CommandData) error {
 
 	if data.Data != nil {
-		//start := time.Now()
+		start := time.Now()
 		switch data.CommandType {
 		case OMZCmd_NFT_Transfer:
 			o.OMZNFTTransfer(data.Data, data.Callback)
 		}
 
-		//end := time.Now()
-
-		//log.Debug("cmd.kind:", data.CommandType, ",elapsed", end.Sub(start))
+		end := time.Now()
+		log.Infof("cmd.kind:", data.CommandType, ",elapsed", end.Sub(start))
 	}
 	return nil
 }
