@@ -25,8 +25,7 @@ type Cmd struct {
 func NewCmd(procMgr *ProcManager) *Cmd {
 	cmd := new(Cmd)
 	cmd.procMgr = procMgr
-
-	cmd.command = make(chan *basenet.CommandData)
+	cmd.command = make(chan *basenet.CommandData, 1000)
 	return cmd
 }
 
@@ -83,17 +82,19 @@ func (o *Cmd) StartCommand() {
 }
 
 func (o *Cmd) CommandProc(data *basenet.CommandData) error {
-
-	if data.Data != nil {
-		start := time.Now()
-		switch data.CommandType {
-		case OMZCmd_NFT_Transfer:
-			o.OMZNFTTransfer(data.Data, data.Callback)
-		}
-
-		end := time.Now()
-		log.Infof("cmd.kind:", data.CommandType, ",elapsed", end.Sub(start))
+	if data.Data == nil {
+		return nil
 	}
+
+	start := time.Now()
+	switch data.CommandType {
+	case OMZCmd_NFT_Transfer:
+		o.OMZNFTTransfer(data.Data, data.Callback)
+	}
+
+	end := time.Now()
+	log.Infof("cmd.kind:%v", data.CommandType, ",elapsed:%v", end.Sub(start))
+
 	return nil
 }
 
