@@ -13,7 +13,8 @@
             "program": "${fileWorkspaceFolder}/main.go",
             "env": {},
             "args": ["-c", "config.yml"],
-            "cwd": "${workspaceRoot}/bin"
+            "cwd": "${workspaceRoot}/bin",
+            "dlvFlags": ["--check-go-version=false"]
         }
     ]
 }

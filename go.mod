@@ -8,14 +8,15 @@ require (
 	github.com/ONBUFF-IP-TOKEN/basedb v1.1.18
 	github.com/ONBUFF-IP-TOKEN/basenet v1.0.3
 	github.com/ONBUFF-IP-TOKEN/baseutil v1.0.7
+	github.com/denisenkom/go-mssqldb v0.11.0
 	github.com/go-redsync/redsync/v4 v4.4.2
 	github.com/labstack/echo v3.3.10+incompatible
+	github.com/labstack/gommon v0.3.0
 )
 
 require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/couchbase/gocb v1.6.0 // indirect
-	github.com/denisenkom/go-mssqldb v0.11.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/go-redis/redis/v8 v8.11.4 // indirect
@@ -29,7 +30,6 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
-	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/lestrrat/go-file-rotatelogs v0.0.0-20180223000712-d3151e2a480f // indirect
 	github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042 // indirect
 	github.com/mattn/go-colorable v0.1.2 // indirect
